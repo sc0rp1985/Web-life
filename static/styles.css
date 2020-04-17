@@ -1,0 +1,13 @@
+table, th, td {
+  border: 1px solid black;
+}
+
+.empty
+{
+    background-color: white;
+}
+
+.full
+{
+    background-color: red;
+}

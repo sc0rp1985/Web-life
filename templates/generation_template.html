@@ -1,0 +1,19 @@
+
+
+{% block content %}
+       <h1>Generaton: {{ gen_id }}</h1>
+       <input type="hidden" id="dump" value="{{ dump }}"/>
+       <input type="hidden" id="gen_id" value="{{ gen_id }}"/>
+       <input type="hidden" id="hash" value="{{ hash }}"/>
+       <table>
+           {% for row in world %}
+                <tr>
+                {% for col in row %}
+                    <td>
+                        <div class = {% if col == 1 %} full {% else %} empty {%endif%}>{{ col }}</div>
+                    </td>
+                {% endfor %}
+                </tr>
+           {% endfor %}
+       </table>
+{% endblock %}

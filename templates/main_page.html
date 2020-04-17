@@ -1,0 +1,84 @@
+<html>
+
+    <!--<link href="../static/styles.css" rel="stylesheet"/>-->
+    <link type="text/css" rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+<script type="text/javascript">
+        let refreshFuncId=0
+        let delay = 1000;
+
+        function Start_refresh()
+        {
+            obj = document.getElementById("delay");
+            delay = obj == null ? delay : obj.value;
+            $refreshFuncId = window.setTimeout("Refresh()",delay);
+        }
+
+        function Stop_refresh()
+        {
+            clearTimeout(refreshFuncId);
+        }
+
+        function Refresh()
+        {
+            let obj = document.getElementById("dump");
+            let text_dump = obj == null ? "" : obj.value;
+
+            obj = document.getElementById("size");
+            let text_size = obj == null ? "" : obj.value;
+
+            obj = document.getElementById("gen_id");
+            let text_gen_id = obj == null ? "" : obj.value;
+
+            obj = document.getElementById("random");
+            let random = obj == null ? "" : obj.checked;
+
+            obj = document.getElementById("hash");
+            let hash = obj == null ? "" : obj.value;
+
+
+
+            $.ajax(
+            {
+              url: "/next_gen",
+              type: "get",
+              data: {dump: text_dump, size : text_size, gen_id : text_gen_id, isRandom : random, hash: hash},
+              success: function(response)
+              {
+                $("#place_for_world").html(response);
+                refreshFuncId = window.setTimeout("Refresh()",delay);
+
+              },
+              error: function(xhr)
+              {
+                //Do Something to handle error
+              }
+            });
+        }
+    </script>
+
+    <head>
+      {% if title %}
+      <title>{{ title }}</title>
+      {% else %}
+      <title>Test title</title>
+      {% endif %}
+    </head>
+    <body>
+
+        <div id="controllers">
+            <input type="text" id="size" value="10"/>Size<Br>
+            <input type="checkbox" id ="random" />Random<Br>
+            <input type="text" id ="delay" />Время обновления.(мс)<Br>
+            <input type="button" onclick="Start_refresh();" value="Start"/>
+            <button id="stop" onClick="Stop_refresh();">Stop</button>
+        </Div>
+
+        <div id="place_for_world">
+            {% block content %}
+            {% endblock %}
+        </div>
+
+
+    </body>
+</html>
